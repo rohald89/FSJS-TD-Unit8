@@ -56,6 +56,23 @@ h2 {
   padding-top: 20px;
 }
 
+h2.errors {
+  border: none;
+  color: red;
+  margin: 0;
+}
+
+.errors {
+  padding-left: 40px;
+  padding-bottom: 20px;
+  margin: 0;
+}
+.errors li {
+  margin-left: 10px;
+}
+.errors li:not(:last-of-type) {
+  padding-bottom: 20px;
+}
 th {
   border-bottom: 2px solid #d8b493;
   text-align: left;
