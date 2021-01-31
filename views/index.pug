@@ -2,6 +2,12 @@ extends layout
 
 block content
     h1 Books
+    form(action='/books/search')
+        p.search
+            label(for="search") Search
+            input(name="term" type="text" id="search")
+        input(type='submit' value="Search")
+    br
     p
         a.button(href="/books/new") Create New Book
     table
