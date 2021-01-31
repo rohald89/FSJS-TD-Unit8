@@ -18,8 +18,28 @@ function asyncHandler(cb){
 
 router.get('/', asyncHandler(async (req, res, next) => {
   const books = await Book.findAll({ order: [["author", "ASC"]] });
-  // console.log(books.map(book => book.toJSON()));
-  res.render('index', { books, title: 'Books' });
+
+  if(books.length > 10) {
+    res.redirect('/books/page/1')
+  } else {
+    res.render('index', { books , title: 'Books' });
+  }
+}));
+
+router.get('/page/:page', asyncHandler(async(req,res,next) => {
+  const numberOfBooks = await Book.count();
+  const perPage = 10
+  const pages = Math.ceil(numberOfBooks / perPage);
+  const limit = parseInt(req.params.page) * perPage;
+  const offset = limit - perPage;
+  const books = await Book.findAll({offset, limit});
+  if (books.length > 0){
+    res.render('index', {books, title: "Books", pages});
+  } else {
+    const error = new Error('not Found');
+    error.status = 404;
+    throw error;
+  }
 }));
 
 router.get('/new', asyncHandler(async (req, res, next) => {
