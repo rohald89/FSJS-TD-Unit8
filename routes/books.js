@@ -66,7 +66,11 @@ router.get('/search', asyncHandler(async (req,res,next) => {
       ]
     }
   });
-  res.render('index', { books });
+  if(term === ''){
+    res.redirect('/books');
+  } else {
+    res.render('index', { books });
+  }
 }));
 
 
