@@ -31,6 +31,10 @@ input[type='submit'] {
   transition: 0.4s;
 }
 
+.search input[type='submit'] {
+  margin: 0;
+}
+
 input[type='submit'] {
   border: 0;
 }
@@ -58,6 +62,30 @@ h2 {
 
 .errors {
   color: red;
+}
+
+.pages {
+  display: flex;
+}
+
+.page {
+  list-style: none;
+  color: white;
+  background: #019875;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.page a {
+  color: inherit;
 }
 
 th {

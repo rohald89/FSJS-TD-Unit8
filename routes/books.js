@@ -28,13 +28,13 @@ router.get('/', asyncHandler(async (req, res, next) => {
 
 router.get('/page/:page', asyncHandler(async(req,res,next) => {
   const numberOfBooks = await Book.count();
-  const perPage = 10
+  const perPage = 10;
   const pages = Math.ceil(numberOfBooks / perPage);
-  const limit = parseInt(req.params.page) * perPage;
-  const offset = limit - perPage;
-  const books = await Book.findAll({offset, limit});
+  const currentPage = parseInt(req.params.page);
+  const offset = parseInt(req.params.page) * perPage - perPage;
+  const books = await Book.findAll({offset, limit: perPage});
   if (books.length > 0){
-    res.render('index', {books, title: "Books", pages});
+    res.render('index', {books, title: "Books", currentPage, pages});
   } else {
     const error = new Error('not Found');
     error.status = 404;
@@ -47,7 +47,6 @@ router.get('/new', asyncHandler(async (req, res, next) => {
 }));
 
 router.get('/search', asyncHandler(async (req,res,next) => {
-  // https://www.youtube.com/watch?v=6jbrWF3BWM0
   const { term } = req.query;
   const books = await Book.findAll({ 
     where: {
@@ -67,7 +66,7 @@ router.get('/search', asyncHandler(async (req,res,next) => {
       ]
     }
   });
-  res.render('index', { books })
+  res.render('index', { books });
 }));
 
 
