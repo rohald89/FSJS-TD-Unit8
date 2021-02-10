@@ -11,6 +11,11 @@ function pagination(){
       const endIndex = currentPage * perPage;
       const offset = parseInt(req.query.page) * perPage - perPage;
       const bookRange = books.slice(offset, endIndex);
+      if(currentPage > pages){
+        const error = new Error('The page you are looking for can not be found');
+        error.status = 404;
+        next(error);
+      }
       if(!req.query.page) {
         res.redirect(url.format({
           pathname:"/books",
