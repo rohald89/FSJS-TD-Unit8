@@ -1,4 +1,4 @@
-const Book = require('../../models').Book;
+const Book = require('../models').Book;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 

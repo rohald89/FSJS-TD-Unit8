@@ -3,8 +3,8 @@ var router = express.Router();
 const Book = require('../models').Book;
 const Sequelize = require('sequelize');
 
-const pagination = require('../public/javascripts/pagination');
-const search = require('../public/javascripts/search');
+const pagination = require('../utilities/pagination');
+const search = require('../utilities/search');
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
