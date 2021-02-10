@@ -27,12 +27,17 @@ function search() {
           }
         });
       } else {
-        console.log("NO SEARCH TERM ENTERED!")
         books = await Book.findAll({ order: [["author", "ASC"]] });
       }
-      req.books = books;
-      req.term = req.query.term;
-      next();
+      if (books.length === 0){
+        const error = new Error('Your search does not have any results');
+        error.status = 404;
+        next(error);
+      } else {
+        req.books = books;
+        req.term = req.query.term;
+        next();
+      }    
     }
   }
 

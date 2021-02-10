@@ -10,8 +10,7 @@ function pagination(){
       const currentPage = parseInt(req.query.page);
       const endIndex = currentPage * perPage;
       const offset = parseInt(req.query.page) * perPage - perPage;
-      const bookRange = books.slice(offset, endIndex)
-      console.log(numberOfBooks, pages, currentPage, offset)
+      const bookRange = books.slice(offset, endIndex);
       if(!req.query.page) {
         res.redirect(url.format({
           pathname:"/books",
@@ -31,7 +30,6 @@ function pagination(){
         error.status = 404;
         throw error;
       }
-      // next();
     }
   }
 

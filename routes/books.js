@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const Book = require('../models').Book;
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 const pagination = require('../public/javascripts/pagination');
 const search = require('../public/javascripts/search');
