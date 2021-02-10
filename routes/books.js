@@ -4,6 +4,9 @@ const Book = require('../models').Book;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const pagination = require('../public/javascripts/pagination');
+const search = require('../public/javascripts/search');
+
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
   return async(req, res, next) => {
@@ -16,63 +19,20 @@ function asyncHandler(cb){
   }
 }
 
-router.get('/', asyncHandler(async (req, res, next) => {
-  const books = await Book.findAll({ order: [["author", "ASC"]] });
-
-  if(books.length > 10) {
-    res.redirect('/books/page/1')
-  } else {
-    res.render('index', { books , title: 'Books' });
-  }
+router.get('/', search(), pagination(), asyncHandler(async (req, res) => {
+  res.render('index', {
+    books: req.books, 
+    title: "Books", 
+    currentPage: 
+    req.currentPage, 
+    pages: req.pages, 
+    term: req.term});
 }));
 
-router.get('/page/:page', asyncHandler(async(req,res,next) => {
-  const numberOfBooks = await Book.count();
-  const perPage = 10;
-  const pages = Math.ceil(numberOfBooks / perPage);
-  const currentPage = parseInt(req.params.page);
-  const offset = parseInt(req.params.page) * perPage - perPage;
-  const books = await Book.findAll({offset, limit: perPage});
-  if (books.length > 0){
-    res.render('index', {books, title: "Books", currentPage, pages});
-  } else {
-    const error = new Error('not Found');
-    error.status = 404;
-    throw error;
-  }
-}));
 
-router.get('/new', asyncHandler(async (req, res, next) => {
+router.get('/new', asyncHandler(async (req, res) => {
   res.render('new-book', { title: 'New Book' });
 }));
-
-router.get('/search', asyncHandler(async (req,res,next) => {
-  const { term } = req.query;
-  const books = await Book.findAll({ 
-    where: {
-      [Op.or]: [
-        {title: {
-          [Op.like]: '%' + term + '%'
-        }},
-        {author: {
-          [Op.like]: '%' + term + '%'
-        }},
-        {genre: {
-          [Op.like]: '%' + term + '%'
-        }},
-        {year: {
-          [Op.like]: '%' + term + '%'
-        }}
-      ]
-    }
-  });
-  if(term === ''){
-    res.redirect('/books');
-  } else {
-    res.render('index', { books });
-  }
-}));
-
 
 
 router.post('/new', asyncHandler(async (req, res) => {
@@ -131,6 +91,5 @@ router.post('/:id/delete', asyncHandler(async (req,res) => {
     res.sendStatus(404);
   }
 }))
-
 
 module.exports = router;

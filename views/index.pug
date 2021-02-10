@@ -27,5 +27,5 @@ block content
     ul.pages
         while n < pages + 1
             li.page
-                a(href='/books/page/'+n)= n++
+                a(href=`/books?term=${term}&page=`+n)= n++
                 
